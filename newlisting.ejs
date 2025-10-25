@@ -1,0 +1,910 @@
+<% layout("/layouts/boilerplate")%>
+
+<div class="create-listing-container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 col-md-10">
+      
+      <!-- Header Section -->
+      <div class="page-header">
+        <a href="/listings" class="back-link">
+          <i class="fas fa-arrow-left"></i> Back to all listings
+        </a>
+        <h1 class="page-title">List Your Property</h1>
+        <p class="page-subtitle">Share your space with travelers from around the world</p>
+      </div>
+
+      <!-- Progress Indicator -->
+      <div class="progress-indicator">
+        <div class="progress-step active">
+          <div class="step-number">1</div>
+          <span class="step-label">Basic Info</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step">
+          <div class="step-number">2</div>
+          <span class="step-label">Photos</span>
+        </div>
+        <div class="progress-line"></div>
+        <div class="progress-step">
+          <div class="step-number">3</div>
+          <span class="step-label">Location</span>
+        </div>
+      </div>
+
+      <!-- Create Form Card -->
+      <div class="create-form-card">
+        <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data" id="createListingForm">
+          
+          <!-- Basic Information Section -->
+          <div class="form-section">
+            <div class="section-header">
+              <h3 class="section-title">
+                <i class="fas fa-home"></i> Tell us about your place
+              </h3>
+              <span class="step-badge">Step 1 of 3</span>
+            </div>
+            
+            <!-- Title -->
+            <div class="form-group">
+              <label class="form-label" for="title">
+                Property Title <span class="required">*</span>
+              </label>
+              <input 
+                class="form-control form-control-modern" 
+                type="text" 
+                id="title"
+                name="listing[title]" 
+                placeholder="e.g., Stunning Mountain View Cabin with Hot Tub"
+                required
+                maxlength="100"
+              />
+              <div class="form-feedback">
+                <div class="valid-feedback">
+                  <i class="fas fa-check-circle"></i> Perfect title!
+                </div>
+                <div class="invalid-feedback">
+                  <i class="fas fa-exclamation-circle"></i> Please enter a catchy title
+                </div>
+              </div>
+              <small class="form-text">
+                <i class="fas fa-lightbulb"></i> Tip: Highlight unique features that make your place special
+              </small>
+            </div>
+
+            <!-- Description -->
+            <div class="form-group">
+              <label class="form-label" for="description">
+                Description <span class="required">*</span>
+              </label>
+              <textarea 
+                class="form-control form-control-modern" 
+                id="description"
+                name="listing[description]" 
+                rows="6"
+                placeholder="Describe your space, amenities, what makes it special, nearby attractions..."
+                required
+                minlength="50"
+              ></textarea>
+              <div class="form-feedback">
+                <div class="invalid-feedback">
+                  <i class="fas fa-exclamation-circle"></i> Please provide a detailed description (at least 50 characters)
+                </div>
+              </div>
+              <small class="form-text">
+                <span id="descCharCount">0</span> / 500 characters • 
+                <span id="descWordCount">0</span> words
+              </small>
+            </div>
+          </div>
+
+          <!-- Images Section -->
+          <div class="form-section">
+            <div class="section-header">
+              <h3 class="section-title">
+                <i class="fas fa-camera"></i> Show off your space
+              </h3>
+              <span class="step-badge">Step 2 of 3</span>
+            </div>
+            
+            <!-- Image Upload -->
+            <div class="form-group">
+              <label class="form-label" for="image">
+                Property Photos <span class="required">*</span>
+              </label>
+              <div class="file-upload-wrapper">
+                <input 
+                  class="file-input" 
+                  type="file" 
+                  id="image"
+                  name="listing[image]"
+                  accept="image/*"
+                  required
+                  onchange="handleImageUpload(event)"
+                />
+                <label for="image" class="file-upload-label">
+                  <div class="upload-icon">
+                    <i class="fas fa-cloud-upload-alt"></i>
+                  </div>
+                  <span class="upload-text">Click to upload or drag and drop</span>
+                  <span class="upload-subtext">High-quality photos help attract more guests</span>
+                  <span class="upload-formats">PNG, JPG, WEBP (Max 10MB)</span>
+                </label>
+                
+                <!-- Image Preview -->
+                <div id="imagePreviewContainer" class="image-preview-container" style="display: none;">
+                  <div class="preview-badge">
+                    <i class="fas fa-check-circle"></i> Image uploaded
+                  </div>
+                  <img id="imagePreview" alt="Property preview"/>
+                  <button type="button" class="remove-image" onclick="removeImage()">
+                    <i class="fas fa-trash-alt"></i> Remove
+                  </button>
+                </div>
+              </div>
+              <div class="form-feedback">
+                <div class="invalid-feedback">
+                  <i class="fas fa-exclamation-circle"></i> Please upload at least one photo of your property
+                </div>
+              </div>
+              <small class="form-text">
+                <i class="fas fa-info-circle"></i> Pro tip: Upload bright, well-lit photos that showcase your best features
+              </small>
+            </div>
+          </div>
+
+          <!-- Pricing & Location Section -->
+          <div class="form-section">
+            <div class="section-header">
+              <h3 class="section-title">
+                <i class="fas fa-map-marker-alt"></i> Set your price and location
+              </h3>
+              <span class="step-badge">Step 3 of 3</span>
+            </div>
+            
+            <!-- Price -->
+            <div class="form-group">
+              <label class="form-label" for="price">
+                Price per Night <span class="required">*</span>
+              </label>
+              <div class="input-with-icon">
+                <span class="input-icon">$</span>
+                <input 
+                  class="form-control form-control-modern with-icon" 
+                  type="number" 
+                  id="price"
+                  name="listing[price]" 
+                  placeholder="99"
+                  min="1"
+                  required
+                />
+                <div class="price-suggestion" id="priceSuggestion"></div>
+              </div>
+              <div class="form-feedback">
+                <div class="invalid-feedback">
+                  <i class="fas fa-exclamation-circle"></i> Please enter a valid price
+                </div>
+              </div>
+              <small class="form-text">
+                <i class="fas fa-chart-line"></i> Average prices in your area: $75-$150/night
+              </small>
+            </div>
+
+            <!-- Country & Location Row -->
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label" for="country">
+                    Country <span class="required">*</span>
+                  </label>
+                  <div class="input-with-icon">
+                    <span class="input-icon"><i class="fas fa-globe-americas"></i></span>
+                    <input 
+                      class="form-control form-control-modern with-icon" 
+                      type="text" 
+                      id="country"
+                      name="listing[country]" 
+                      placeholder="United States"
+                      required
+                      list="countryList"
+                    />
+                    <datalist id="countryList">
+                      <option value="United States">
+                      <option value="India">
+                      <option value="United Kingdom">
+                      <option value="Canada">
+                      <option value="Australia">
+                      <option value="France">
+                      <option value="Spain">
+                      <option value="Italy">
+                      <option value="Japan">
+                      <option value="Mexico">
+                    </datalist>
+                  </div>
+                  <div class="form-feedback">
+                    <div class="invalid-feedback">
+                      <i class="fas fa-exclamation-circle"></i> Please enter the country
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label class="form-label" for="location">
+                    City / Location <span class="required">*</span>
+                  </label>
+                  <div class="input-with-icon">
+                    <span class="input-icon"><i class="fas fa-map-pin"></i></span>
+                    <input 
+                      class="form-control form-control-modern with-icon" 
+                      type="text" 
+                      id="location"
+                      name="listing[location]" 
+                      placeholder="San Francisco, CA"
+                      required
+                    />
+                  </div>
+                  <div class="form-feedback">
+                    <div class="invalid-feedback">
+                      <i class="fas fa-exclamation-circle"></i> Please enter the location
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="form-actions">
+            <a href="/listings" class="btn btn-cancel">
+              <i class="fas fa-times"></i> Cancel
+            </a>
+            <button type="submit" class="btn btn-primary-custom">
+              <i class="fas fa-plus-circle"></i> Create Listing
+            </button>
+          </div>
+
+        </form>
+      </div>
+
+      <!-- Help Section -->
+      <div class="help-card">
+        <div class="help-icon">
+          <i class="fas fa-question-circle"></i>
+        </div>
+        <div class="help-content">
+          <h4>Need help getting started?</h4>
+          <p>Check out our hosting guide or contact support for assistance with your listing.</p>
+          <a href="#" class="help-link">View Hosting Guide <i class="fas fa-arrow-right"></i></a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+/* Create Listing Styles */
+.create-listing-container {
+  padding: 3rem 0;
+  min-height: calc(100vh - 200px);
+  background: linear-gradient(to bottom, #FFF5F7 0%, #FFFFFF 300px);
+}
+
+.page-header {
+  margin-bottom: 2rem;
+}
+
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #6B7280;
+  text-decoration: none;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+  transition: all 0.3s ease;
+}
+
+.back-link:hover {
+  color: #FF385C;
+  transform: translateX(-3px);
+}
+
+.page-title {
+  font-size: 2.75rem;
+  font-weight: 700;
+  color: #1F2937;
+  margin-bottom: 0.5rem;
+  font-family: 'Playfair Display', serif;
+}
+
+.page-subtitle {
+  color: #6B7280;
+  font-size: 1.15rem;
+  margin: 0;
+}
+
+/* Progress Indicator */
+.progress-indicator {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 2.5rem;
+  padding: 1.5rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.progress-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.step-number {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: #E5E7EB;
+  color: #6B7280;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  transition: all 0.3s ease;
+}
+
+.progress-step.active .step-number {
+  background: linear-gradient(135deg, #FF385C 0%, #E31C5F 100%);
+  color: white;
+  box-shadow: 0 4px 8px rgba(255, 56, 92, 0.3);
+}
+
+.step-label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #6B7280;
+}
+
+.progress-step.active .step-label {
+  color: #FF385C;
+  font-weight: 600;
+}
+
+.progress-line {
+  height: 2px;
+  width: 80px;
+  background: #E5E7EB;
+  margin: 0 1rem;
+}
+
+/* Form Card */
+.create-form-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+}
+
+.form-section {
+  margin-bottom: 3rem;
+  padding-bottom: 3rem;
+  border-bottom: 2px solid #F3F4F6;
+}
+
+.form-section:last-of-type {
+  border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #1F2937;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.section-title i {
+  color: #FF385C;
+}
+
+.step-badge {
+  background: linear-gradient(135deg, #FF385C 0%, #E31C5F 100%);
+  color: white;
+  padding: 0.375rem 0.875rem;
+  border-radius: 20px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.form-group {
+  margin-bottom: 1.75rem;
+}
+
+.form-label {
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.625rem;
+  display: block;
+  font-size: 0.95rem;
+}
+
+.required {
+  color: #EF4444;
+  font-size: 1.1em;
+}
+
+.form-control-modern {
+  border: 2px solid #E5E7EB;
+  border-radius: 10px;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #FAFAFA;
+}
+
+.form-control-modern:focus {
+  border-color: #FF385C;
+  box-shadow: 0 0 0 4px rgba(255, 56, 92, 0.1);
+  background-color: white;
+  outline: none;
+}
+
+.form-control-modern::placeholder {
+  color: #9CA3AF;
+}
+
+/* Form Feedback */
+.form-feedback {
+  margin-top: 0.5rem;
+}
+
+.valid-feedback,
+.invalid-feedback {
+  display: none;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+}
+
+.valid-feedback {
+  color: #10B981;
+}
+
+.invalid-feedback {
+  color: #EF4444;
+}
+
+.was-validated .form-control:valid ~ .form-feedback .valid-feedback,
+.was-validated .form-control:invalid ~ .form-feedback .invalid-feedback,
+.was-validated .file-input:valid ~ .form-feedback .valid-feedback,
+.was-validated .file-input:invalid ~ .form-feedback .invalid-feedback {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+}
+
+.form-text {
+  display: block;
+  margin-top: 0.625rem;
+  color: #6B7280;
+  font-size: 0.875rem;
+}
+
+.form-text i {
+  color: #FF385C;
+  margin-right: 0.25rem;
+}
+
+/* Input with Icon */
+.input-with-icon {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #6B7280;
+  font-weight: 600;
+  z-index: 1;
+}
+
+.form-control-modern.with-icon {
+  padding-left: 2.75rem;
+}
+
+.price-suggestion {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  color: #10B981;
+  font-weight: 600;
+}
+
+/* File Upload */
+.file-upload-wrapper {
+  position: relative;
+}
+
+.file-input {
+  display: none;
+}
+
+.file-upload-label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  border: 3px dashed #D1D5DB;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #FAFAFA 0%, #FFFFFF 100%);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+}
+
+.file-upload-label:hover {
+  border-color: #FF385C;
+  background: linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(255, 56, 92, 0.1);
+}
+
+.upload-icon {
+  font-size: 3rem;
+  color: #FF385C;
+  margin-bottom: 1rem;
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+.upload-text {
+  display: block;
+  font-weight: 600;
+  color: #374151;
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+}
+
+.upload-subtext {
+  display: block;
+  font-size: 0.95rem;
+  color: #6B7280;
+  margin-bottom: 0.25rem;
+}
+
+.upload-formats {
+  display: block;
+  font-size: 0.8rem;
+  color: #9CA3AF;
+}
+
+/* Image Preview */
+.image-preview-container {
+  position: relative;
+  margin-top: 1.5rem;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.image-preview-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.preview-badge {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  background: #10B981;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 8px rgba(16, 185, 129, 0.3);
+}
+
+.remove-image {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  background: white;
+  color: #EF4444;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: all 0.3s ease;
+}
+
+.remove-image:hover {
+  background: #EF4444;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Action Buttons */
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  padding-top: 2rem;
+  border-top: 2px solid #F3F4F6;
+  margin-top: 2rem;
+}
+
+.btn-cancel {
+  padding: 0.875rem 1.75rem;
+  border-radius: 10px;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background-color: #F3F4F6;
+  color: #374151;
+  border: 2px solid #E5E7EB;
+  transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+  background-color: #E5E7EB;
+  color: #1F2937;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary-custom {
+  padding: 0.875rem 2.5rem;
+  border-radius: 10px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: linear-gradient(135deg, #FF385C 0%, #E31C5F 100%);
+  color: white;
+  border: none;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 8px rgba(255, 56, 92, 0.3);
+}
+
+.btn-primary-custom:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(255, 56, 92, 0.4);
+}
+
+.btn-primary-custom:active {
+  transform: translateY(0);
+}
+
+/* Help Card */
+.help-card {
+  background: linear-gradient(135deg, #F0F9FF 0%, #E0F2FE 100%);
+  border: 2px solid #BAE6FD;
+  border-radius: 16px;
+  padding: 1.75rem;
+  display: flex;
+  gap: 1.25rem;
+  align-items: start;
+  margin-bottom: 3rem;
+}
+
+.help-icon {
+  font-size: 2rem;
+  color: #0EA5E9;
+  flex-shrink: 0;
+}
+
+.help-content h4 {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: #0C4A6E;
+  margin-bottom: 0.5rem;
+}
+
+.help-content p {
+  color: #075985;
+  margin-bottom: 0.75rem;
+}
+
+.help-link {
+  color: #0EA5E9;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  transition: gap 0.3s ease;
+}
+
+.help-link:hover {
+  gap: 0.625rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .create-listing-container {
+    padding: 2rem 0;
+  }
+  
+  .create-form-card {
+    padding: 1.5rem;
+  }
+  
+  .page-title {
+    font-size: 2rem;
+  }
+  
+  .progress-indicator {
+    padding: 1rem;
+  }
+  
+  .step-label {
+    display: none;
+  }
+  
+  .progress-line {
+    width: 40px;
+  }
+  
+  .section-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+  
+  .btn-cancel,
+  .btn-primary-custom {
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .help-card {
+    flex-direction: column;
+  }
+}
+</style>
+
+<script>
+// Form validation
+(function() {
+  'use strict';
+  const form = document.getElementById('createListingForm');
+  
+  form.addEventListener('submit', function(event) {
+    if (!form.checkValidity()) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
+    form.classList.add('was-validated');
+  }, false);
+})();
+
+// Character and word counter
+const description = document.getElementById('description');
+const charCount = document.getElementById('descCharCount');
+const wordCount = document.getElementById('descWordCount');
+
+if (description && charCount && wordCount) {
+  const updateCounts = () => {
+    const text = description.value;
+    charCount.textContent = text.length;
+    
+    const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+    wordCount.textContent = words.length;
+  };
+  
+  description.addEventListener('input', updateCounts);
+}
+
+// Image upload handler
+function handleImageUpload(event) {
+  const file = event.target.files[0];
+  if (file) {
+    // Validate file size (10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      alert('File size must be less than 10MB');
+      event.target.value = '';
+      return;
+    }
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const container = document.getElementById('imagePreviewContainer');
+      const preview = document.getElementById('imagePreview');
+      const label = document.querySelector('.file-upload-label');
+      
+      preview.src = e.target.result;
+      container.style.display = 'block';
+      label.style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+// Remove image
+function removeImage() {
+  const fileInput = document.getElementById('image');
+  const container = document.getElementById('imagePreviewContainer');
+  const label = document.querySelector('.file-upload-label');
+  
+  fileInput.value = '';
+  container.style.display = 'none';
+  label.style.display = 'flex';
+}
+
+// Price suggestion (simple logic)
+const priceInput = document.getElementById('price');
+const priceSuggestion = document.getElementById('priceSuggestion');
+
+if (priceInput && priceSuggestion) {
+  priceInput.addEventListener('input', function() {
+    const value = parseInt(this.value);
+    if (value > 0) {
+      if (value < 50) {
+        priceSuggestion.textContent = '💡 Consider pricing higher';
+        priceSuggestion.style.color = '#F59E0B';
+      } else if (value >= 50 && value <= 200) {
+        priceSuggestion.textContent = '✓ Great price!';
+        priceSuggestion.style.color = '#10B981';
+      } else {
+        priceSuggestion.textContent = '💎 Premium pricing';
+        priceSuggestion.style.color = '#8B5CF6';
+      }
+    } else {
+      priceSuggestion.textContent = '';
+    }
+  });
+}
+
+// Smooth scroll to first error
+document.getElementById('createListingForm').addEventListener('invalid', function(e) {
+  e.target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}, true);
+</script>

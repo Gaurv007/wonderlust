@@ -1,0 +1,330 @@
+<% layout("/layouts/boilerplate")%>
+
+<style>
+  .login-container {
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem 1rem;
+  }
+
+  .login-card {
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 8px 32px rgba(254, 66, 77, 0.12);
+    padding: 3rem;
+    max-width: 480px;
+    width: 100%;
+    border: 1px solid rgba(254, 66, 77, 0.1);
+  }
+
+  .login-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .login-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #fff5f7 0%, #ffe5ec 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 4px 16px rgba(254, 66, 77, 0.2);
+  }
+
+  .login-icon i {
+    font-size: 2.5rem;
+    color: #fe424d;
+  }
+
+  .login-header h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: #222222;
+    margin-bottom: 0.5rem;
+  }
+
+  .login-header p {
+    color: #717171;
+    font-size: 0.95rem;
+    margin: 0;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .form-label {
+    font-weight: 600;
+    color: #222222;
+    margin-bottom: 0.5rem;
+    display: block;
+    font-size: 0.9rem;
+  }
+
+  .input-wrapper {
+    position: relative;
+  }
+
+  .input-icon {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #717171;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+  }
+
+  .form-control {
+    width: 100%;
+    padding: 0.85rem 1rem 0.85rem 3rem;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background: #f9fafb;
+  }
+
+  .form-control:focus {
+    outline: none;
+    border-color: #fe424d;
+    background: white;
+    box-shadow: 0 0 0 4px rgba(254, 66, 77, 0.1);
+  }
+
+  .form-control:focus + .input-icon {
+    color: #fe424d;
+  }
+
+  .form-control::placeholder {
+    color: #9ca3af;
+  }
+
+  .password-toggle {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #717171;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    padding: 0.5rem;
+  }
+
+  .password-toggle:hover {
+    color: #fe424d;
+  }
+
+  .btn-login {
+    width: 100%;
+    background: linear-gradient(135deg, #fe424d 0%, #ff6b6b 100%);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    padding: 0.9rem;
+    font-weight: 700;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 16px rgba(254, 66, 77, 0.3);
+    margin-top: 1rem;
+  }
+
+  .btn-login:hover {
+    background: linear-gradient(135deg, #e03943 0%, #fe424d 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(254, 66, 77, 0.4);
+  }
+
+  .btn-login:active {
+    transform: translateY(0);
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    margin: 2rem 0;
+    color: #9ca3af;
+    font-size: 0.85rem;
+  }
+
+  .divider::before,
+  .divider::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: #e5e7eb;
+  }
+
+  .divider::before {
+    margin-right: 1rem;
+  }
+
+  .divider::after {
+    margin-left: 1rem;
+  }
+
+  .signup-link {
+    text-align: center;
+    margin-top: 1.5rem;
+    color: #717171;
+    font-size: 0.9rem;
+  }
+
+  .signup-link a {
+    color: #fe424d;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+  }
+
+  .signup-link a:hover {
+    color: #e03943;
+    text-decoration: underline;
+  }
+
+  .remember-forgot {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .form-check {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .form-check-input {
+    width: 1.2rem;
+    height: 1.2rem;
+    cursor: pointer;
+    border: 2px solid #e5e7eb;
+  }
+
+  .form-check-input:checked {
+    background-color: #fe424d;
+    border-color: #fe424d;
+  }
+
+  .form-check-label {
+    color: #717171;
+    cursor: pointer;
+    margin: 0;
+  }
+
+  .forgot-link {
+    color: #fe424d;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+
+  .forgot-link:hover {
+    color: #e03943;
+    text-decoration: underline;
+  }
+
+  @media (max-width: 576px) {
+    .login-card {
+      padding: 2rem 1.5rem;
+    }
+
+    .login-header h1 {
+      font-size: 1.5rem;
+    }
+  }
+</style>
+
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <div class="login-icon">
+        <i class="fa-solid fa-user-lock"></i>
+      </div>
+      <h1>Welcome Back</h1>
+      <p>Login to continue your journey with Wanderlust</p>
+    </div>
+
+    <form action="/login" method="POST" class="needs-validation" novalidate>
+      <div class="form-group">
+        <label for="username" class="form-label">Username</label>
+        <div class="input-wrapper">
+          <input 
+            class="form-control" 
+            type="text" 
+            name="username" 
+            id="username" 
+            placeholder="Enter your username"
+            required
+          >
+          <i class="fa-solid fa-user input-icon"></i>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password" class="form-label">Password</label>
+        <div class="input-wrapper">
+          <input 
+            class="form-control" 
+            type="password" 
+            name="password" 
+            id="password" 
+            placeholder="Enter your password"
+            required
+          >
+          <i class="fa-solid fa-lock input-icon"></i>
+          <button type="button" class="password-toggle" onclick="togglePassword()">
+            <i class="fa-solid fa-eye" id="toggleIcon"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="remember-forgot">
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" id="rememberMe">
+          <label class="form-check-label" for="rememberMe">
+            Remember me
+          </label>
+        </div>
+        <a href="#" class="forgot-link">Forgot password?</a>
+      </div>
+
+      <button class="btn-login" type="submit">
+        <i class="fa-solid fa-right-to-bracket"></i> Login
+      </button>
+    </form>
+
+    <div class="divider">OR</div>
+
+    <div class="signup-link">
+      Don't have an account? <a href="/signup">Sign up now</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  function togglePassword() {
+    const passwordInput = document.getElementById('password');
+    const toggleIcon = document.getElementById('toggleIcon');
+    
+    if (passwordInput.type === 'password') {
+      passwordInput.type = 'text';
+      toggleIcon.classList.remove('fa-eye');
+      toggleIcon.classList.add('fa-eye-slash');
+    } else {
+      passwordInput.type = 'password';
+      toggleIcon.classList.remove('fa-eye-slash');
+      toggleIcon.classList.add('fa-eye');
+    }
+  }
+</script>

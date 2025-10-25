@@ -1,0 +1,476 @@
+<!-- <% layout("/layouts/boilerplate")%>
+    <div class="row mt-3">
+
+        <div class="col-8 offset-2">
+            <br><br>
+            <h3>Create n New Listing.</h3>
+
+
+            <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+
+                <div class="mb-3">
+                    <label for="title" class="form-lable">Title</label>
+                    <input class="form-control" type="text" name="listing[title]" placeholder="add a catchy title " required>
+
+                    <div class="valid-feedback">Title looks good!</div>
+                      <div class="invalid-feedback">please enter the Title</div>
+
+                </div>
+
+                <div class="mb-3">
+                    <label for="description" class="form-lable">Description</label>
+
+                    <textarea class="form-control"  name="listing[description]"
+                        placeholder="enter description" required></textarea>
+                      <div class="invalid-feedback">please enter the Description</div>
+
+                </div>
+
+
+                <div class="mb-3">
+                    <label for="image" class="form-lable">Upload Image</label>
+
+                    <input class="form-control" type="file" name="listing[image]" required/>
+                    
+
+                </div>
+
+
+
+                <div class="row">
+                    <div class="mb-3 col-md-4 ">
+                        <label for="price" class="form-lable">Price </label>
+
+                        <input type="number" class="form-control" name="listing[price]" id="" placeholder="12,000" required>
+                      <div class="invalid-feedback">please enter the Price</div>
+
+                    </div>
+
+                    <div class="mb-3 col-md-8">
+                        <label for="country" class="form-lable">Country </label>
+
+                        <input class="form-control" name="listing[country]" placeholder="India" type="text" required>
+                          <div class="invalid-feedback">please enter the Country name</div>
+
+                    </div>
+                </div>
+
+
+
+
+                <div class="mb-3">
+                    <label for="Location" class="form-lable">Location</label>
+                    <input type="text" class="form-control" name="listing[location]" placeholder="Varanasi" required>
+                    <div class="invalid-feedback">please enter the location</div>
+
+                </div>
+                <button class="btn btn-dark add-btn mt-3">Add</button>
+
+            </form>
+        </div>
+    </div>
+
+    -->
+
+
+
+
+
+<% layout("/layouts/boilerplate")%>
+
+<style>
+/* Create Listing Page Styles */
+.create-listing-wrapper {
+  padding: 3rem 0;
+  min-height: calc(100vh - 200px);
+  background: linear-gradient(to bottom, #FFF5F7 0%, #FFFFFF 400px);
+}
+
+.create-listing-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.create-listing-header h3 {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #1F2937;
+  font-family: 'Playfair Display', serif;
+  margin-bottom: 0.5rem;
+}
+
+.create-listing-header h3::before {
+  content: "✨ ";
+}
+
+.create-listing-header p {
+  color: #6B7280;
+  font-size: 1.1rem;
+}
+
+.create-form-card {
+  background: white;
+  border-radius: 20px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+  padding: 2.5rem;
+  animation: fadeInUp 0.6s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Form Labels */
+.form-lable {
+  font-weight: 600;
+  color: #374151;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-lable::before {
+  content: "•";
+  color: #FF385C;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+/* Form Controls */
+.form-control {
+  border: 2px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 0.875rem 1rem;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #FAFAFA;
+}
+
+.form-control:focus {
+  border-color: #FF385C;
+  box-shadow: 0 0 0 4px rgba(255, 56, 92, 0.1);
+  background-color: white;
+  outline: none;
+  transform: translateY(-2px);
+}
+
+.form-control:hover {
+  border-color: #FF385C;
+}
+
+.form-control::placeholder {
+  color: #9CA3AF;
+  font-style: italic;
+}
+
+/* Validation Feedback */
+.valid-feedback {
+  display: none;
+  color: #10B981;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  font-weight: 600;
+}
+
+.valid-feedback::before {
+  content: "✓ ";
+  font-weight: bold;
+}
+
+.invalid-feedback {
+  display: none;
+  color: #EF4444;
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  font-weight: 600;
+}
+
+.invalid-feedback::before {
+  content: "⚠ ";
+}
+
+.was-validated .form-control:valid ~ .valid-feedback {
+  display: block;
+  animation: slideIn 0.3s ease;
+}
+
+.was-validated .form-control:invalid ~ .invalid-feedback {
+  display: block;
+  animation: shake 0.3s ease;
+}
+
+.was-validated .form-control:valid {
+  border-color: #10B981;
+  background-color: #F0FDF4;
+}
+
+.was-validated .form-control:invalid {
+  border-color: #EF4444;
+  background-color: #FEF2F2;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* Textarea */
+textarea.form-control {
+  resize: vertical;
+  min-height: 120px;
+}
+
+/* File Input */
+input[type="file"].form-control {
+  padding: 0.75rem;
+  cursor: pointer;
+  background: linear-gradient(135deg, #FAFAFA 0%, #FFFFFF 100%);
+  border: 2px dashed #D1D5DB;
+}
+
+input[type="file"].form-control:hover {
+  border-color: #FF385C;
+  background: linear-gradient(135deg, #FFF5F7 0%, #FFFFFF 100%);
+}
+
+input[type="file"].form-control::file-selector-button {
+  padding: 0.5rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #FF385C 0%, #E31C5F 100%);
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  margin-right: 1rem;
+  transition: all 0.3s ease;
+}
+
+input[type="file"].form-control::file-selector-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255, 56, 92, 0.4);
+}
+
+/* Number Input */
+input[type="number"].form-control {
+  font-weight: 600;
+  font-size: 1.1rem;
+}
+
+/* Section Spacing */
+.mb-3 {
+  margin-bottom: 1.75rem !important;
+}
+
+/* Row Layout */
+.row .mb-3 {
+  position: relative;
+}
+
+/* Add Button */
+.btn-dark.add-btn {
+  background: linear-gradient(135deg, #1F2937 0%, #111827 100%);
+  border: none;
+  padding: 1rem 3rem;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: center;
+}
+
+.btn-dark.add-btn::before {
+  content: "➕";
+  font-size: 1.3rem;
+}
+
+.btn-dark.add-btn:hover {
+  background: linear-gradient(135deg, #FF385C 0%, #E31C5F 100%);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(255, 56, 92, 0.4);
+}
+
+.btn-dark.add-btn:active {
+  transform: translateY(-1px);
+}
+
+/* Help Text */
+.form-help {
+  font-size: 0.85rem;
+  color: #6B7280;
+  margin-top: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.form-help i {
+  color: #FF385C;
+}
+
+/* Progress Indicator */
+.form-progress {
+  height: 4px;
+  background: #E5E7EB;
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.form-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #FF385C 0%, #E31C5F 100%);
+  transition: width 0.3s ease;
+  width: 0%;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .create-listing-wrapper {
+    padding: 2rem 0;
+  }
+  
+  .create-form-card {
+    padding: 1.5rem;
+  }
+  
+  .create-listing-header h3 {
+    font-size: 2rem;
+  }
+  
+  .btn-dark.add-btn {
+    padding: 0.875rem 2rem;
+  }
+}
+</style>
+
+<div class="create-listing-wrapper">
+  <div class="row mt-3">
+    <div class="col-8 offset-2">
+      
+      <div class="create-listing-header">
+        <h3>Create a New Listing</h3>
+        <p>Share your amazing space with travelers worldwide</p>
+      </div>
+
+      <div class="create-form-card">
+        
+        <!-- Progress Bar -->
+        <div class="form-progress">
+          <div class="form-progress-bar" id="formProgress"></div>
+        </div>
+
+        <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
+
+          <div class="mb-3">
+            <label for="title" class="form-lable">Title</label>
+            <input class="form-control" type="text" name="listing[title]" placeholder="add a catchy title" required>
+            <div class="valid-feedback">Title looks good!</div>
+            <div class="invalid-feedback">please enter the Title</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="description" class="form-lable">Description</label>
+            <textarea class="form-control" name="listing[description]" placeholder="enter description" required></textarea>
+            <div class="invalid-feedback">please enter the Description</div>
+          </div>
+
+          <div class="mb-3">
+            <label for="image" class="form-lable">Upload Image</label>
+            <input class="form-control" type="file" name="listing[image]" required/>
+          </div>
+
+          <div class="row">
+            <div class="mb-3 col-md-4">
+              <label for="price" class="form-lable">Price</label>
+              <input type="number" class="form-control" name="listing[price]" placeholder="12,000" required>
+              <div class="invalid-feedback">please enter the Price</div>
+            </div>
+
+            <div class="mb-3 col-md-8">
+              <label for="country" class="form-lable">Country</label>
+              <input class="form-control" name="listing[country]" placeholder="India" type="text" required>
+              <div class="invalid-feedback">please enter the Country name</div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label for="Location" class="form-lable">Location</label>
+            <input type="text" class="form-control" name="listing[location]" placeholder="Varanasi" required>
+            <div class="invalid-feedback">please enter the location</div>
+          </div>
+
+          <button class="btn btn-dark add-btn mt-3">Add Listing</button>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// Form validation
+(function() {
+  'use strict';
+  const forms = document.querySelectorAll('.needs-validation');
+  
+  Array.prototype.slice.call(forms).forEach(function(form) {
+    form.addEventListener('submit', function(event) {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
+})();
+
+// Progress bar based on filled fields
+const formInputs = document.querySelectorAll('.form-control');
+const progressBar = document.getElementById('formProgress');
+
+function updateProgress() {
+  let filledCount = 0;
+  const totalInputs = formInputs.length;
+  
+  formInputs.forEach(input => {
+    if (input.value.trim() !== '') {
+      filledCount++;
+    }
+  });
+  
+  const percentage = (filledCount / totalInputs) * 100;
+  progressBar.style.width = percentage + '%';
+}
+
+formInputs.forEach(input => {
+  input.addEventListener('input', updateProgress);
+  input.addEventListener('change', updateProgress);
+});
+</script>

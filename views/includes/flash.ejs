@@ -1,0 +1,103 @@
+<style>
+  .flash-container {
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 9999;
+    width: 90%;
+    max-width: 500px;
+  }
+
+  .alert {
+    border-radius: 12px;
+    padding: 1rem 1.5rem;
+    font-weight: 500;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border: none;
+    animation: slideDown 0.4s ease-out;
+  }
+
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+  }
+
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+    border-left: 4px solid #dc3545;
+  }
+
+  .alert.fade-out {
+    animation: slideUp 0.4s ease-out forwards;
+  }
+
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    to {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+  }
+
+  .btn-close {
+    filter: brightness(0.5);
+  }
+
+  .btn-close:hover {
+    filter: brightness(0.3);
+  }
+</style>
+
+<div class="flash-container">
+  <%if(success && success.length){%>
+    <div class="alert alert-success alert-dismissible fade show" role="alert" data-auto-dismiss="true">
+      <%=success%>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <%}%>
+
+  <%if(error && error.length){%>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert" data-auto-dismiss="true">
+      <%=error%>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+  <%}%>
+</div>
+
+<script>
+  // Auto-dismiss flash messages after 4 seconds
+  document.addEventListener('DOMContentLoaded', function() {
+    const alerts = document.querySelectorAll('[data-auto-dismiss="true"]');
+    
+    alerts.forEach(function(alert) {
+      // Auto dismiss after 4 seconds
+      setTimeout(function() {
+        // Add fade-out animation
+        alert.classList.add('fade-out');
+        
+        // Remove from DOM after animation completes
+        setTimeout(function() {
+          const bsAlert = bootstrap.Alert.getOrCreateInstance(alert);
+          bsAlert.close();
+        }, 400);
+      }, 4000);
+    });
+  });
+</script>

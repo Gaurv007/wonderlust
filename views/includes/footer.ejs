@@ -1,0 +1,118 @@
+<style>
+  footer {
+    background-color: #f7f7f7;
+    border-top: 1px solid #dddddd;
+    padding: 2rem 0;
+    margin-top: 4rem;
+  }
+
+  .f-info {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 2rem;
+  }
+
+  .f-info-socials {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .f-info-socials i {
+    font-size: 1.5rem;
+    color: #717171;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    padding: 0.5rem;
+  }
+
+  .f-info-socials i:hover {
+    color: #fe424d;
+    transform: translateY(-3px);
+  }
+
+  .fa-facebook:hover {
+    color: #1877f2;
+  }
+
+  .fa-square-instagram:hover {
+    color: #e4405f;
+  }
+
+  .fa-linkedin:hover {
+    color: #0077b5;
+  }
+
+  .f-info-brand {
+    color: #717171;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+
+  .f-info-links {
+    display: flex;
+    gap: 1.5rem;
+  }
+
+  .f-info-links a {
+    color: #717171;
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+
+  .f-info-links a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #fe424d;
+    transition: width 0.3s ease;
+  }
+
+  .f-info-links a:hover {
+    color: #222222;
+  }
+
+  .f-info-links a:hover::after {
+    width: 100%;
+  }
+
+  @media (max-width: 768px) {
+    .f-info {
+      flex-direction: column;
+      text-align: center;
+      gap: 1.5rem;
+    }
+
+    .f-info-socials,
+    .f-info-links {
+      justify-content: center;
+    }
+  }
+</style>
+
+<footer>
+  <div class="f-info">
+    <div class="f-info-socials">
+      <i class="fa-brands fa-facebook"></i>
+      <i class="fa-brands fa-square-instagram"></i>
+      <i class="fa-brands fa-linkedin"></i>
+    </div>
+    <div class="f-info-brand">
+      &copy; Wanderlust Private Limited
+    </div>
+    <div class="f-info-links">
+      <a href="/privacy">Privacy</a>
+      <a href="/terms">Terms</a>
+    </div>
+  </div>
+</footer>

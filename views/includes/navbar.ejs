@@ -1,0 +1,337 @@
+<style>
+  .navbar {
+    background: linear-gradient(135deg, #fff5f7 0%, #ffe5ec 100%) !important;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 12px rgba(254, 66, 77, 0.1);
+    padding: 1rem 0;
+    border: none !important;
+    margin: 0 2rem;
+    border-radius: 0 0 50px 50px;
+    margin-top: 0;
+  }
+
+  .navbar-brand {
+    font-size: 1.5rem;
+    color: #fe424d !important;
+    transition: all 0.3s ease;
+    padding: 0.5rem 1rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .navbar-brand:hover {
+    transform: scale(1.05);
+  }
+
+  .navbar-brand i {
+    color: #fe424d;
+    font-size: 1.8rem;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.08);
+    }
+  }
+
+  .brand-text {
+    background: linear-gradient(135deg, #fe424d 0%, #ff6b6b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    letter-spacing: 0.5px;
+  }
+
+  .nav-link {
+    color: #fe424d !important;
+    font-weight: 600;
+    margin: 0 0.3rem;
+    padding: 0.6rem 1.2rem !important;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .nav-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(254, 66, 77, 0.1), transparent);
+    transition: left 0.5s ease;
+  }
+
+  .nav-link:hover::before {
+    left: 100%;
+  }
+
+  .nav-link:hover {
+    background: rgba(254, 66, 77, 0.15);
+    color: #e03943 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(254, 66, 77, 0.2);
+  }
+
+  .nav-link b {
+    font-weight: 700;
+    color: #fe424d;
+  }
+
+  /* Search Container */
+  .search-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 50px;
+    padding: 0.25rem;
+    box-shadow: 0 2px 8px rgba(254, 66, 77, 0.15);
+    transition: all 0.3s ease;
+  }
+
+  .search-container:hover,
+  .search-container:focus-within {
+    box-shadow: 0 4px 16px rgba(254, 66, 77, 0.25);
+    transform: translateY(-2px);
+  }
+
+  .form-control {
+    border: none;
+    background: transparent;
+    padding: 0.6rem 1.5rem;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    color: #222222;
+    width: 220px;
+  }
+
+  .form-control:focus {
+    box-shadow: none;
+    outline: none;
+    width: 280px;
+  }
+
+  .form-control::placeholder {
+    color: #717171;
+    font-weight: 500;
+  }
+
+  .btn {
+    background: linear-gradient(135deg, #fe424d 0%, #ff6b6b 100%);
+    color: white;
+    border-radius: 50px;
+    padding: 0.6rem 1.5rem;
+    border: none;
+    font-weight: 700;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 8px rgba(254, 66, 77, 0.3);
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .btn:hover {
+    background: linear-gradient(135deg, #e03943 0%, #fe424d 100%);
+    transform: translateY(-2px) scale(1.05);
+    box-shadow: 0 4px 16px rgba(254, 66, 77, 0.4);
+  }
+
+  .btn i {
+    font-size: 1rem;
+    margin: 0;
+  }
+
+  .navbar-toggler {
+    border: 2px solid rgba(254, 66, 77, 0.3);
+    padding: 0.5rem 0.75rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    background: rgba(254, 66, 77, 0.05);
+  }
+
+  .navbar-toggler:hover {
+    background: rgba(254, 66, 77, 0.15);
+    border-color: #fe424d;
+    transform: rotate(90deg);
+  }
+
+  .navbar-toggler:focus {
+    box-shadow: 0 0 0 3px rgba(254, 66, 77, 0.2);
+  }
+
+  .navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28254, 66, 77, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='3' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+  }
+
+  /* Add listing button special style */
+  .add-listing-btn {
+    background: rgba(254, 66, 77, 0.1);
+    border: 2px solid #fe424d;
+    color: #fe424d !important;
+  }
+
+  .add-listing-btn:hover {
+    background: #fe424d;
+    color: white !important;
+    border-color: #fe424d;
+  }
+
+  /* User menu icons */
+  .user-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .user-icon i {
+    font-size: 1rem;
+  }
+
+  /* Content alignment wrapper */
+  .navbar-content-wrapper {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+
+  @media (max-width: 992px) {
+    .navbar {
+      margin: 0 1rem;
+      border-radius: 0 0 24px 24px;
+    }
+
+    .navbar-nav {
+      padding: 1rem 0;
+    }
+    
+    .nav-link {
+      margin: 0.5rem 0;
+      text-align: center;
+    }
+
+    .search-container {
+      margin: 1rem 0;
+      width: 100%;
+    }
+
+    .form-control,
+    .form-control:focus {
+      width: 100%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .navbar {
+      margin: 0 0.5rem;
+    }
+  }
+
+  /* Decorative elements */
+  .navbar::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #fe424d, transparent);
+    border-radius: 0 0 50px 50px;
+    animation: shimmer 3s infinite;
+  }
+
+  @keyframes shimmer {
+    0%, 100% {
+      opacity: 0.5;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+</style>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+  <div class="container-fluid navbar-content-wrapper">
+    <a class="navbar-brand" href="/listings">
+      <i class="fa-solid fa-earth-americas"></i>
+      <span class="brand-text">Wanderlust</span>
+    </a>
+    
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" href="/listings">
+          <span class="user-icon">
+            <i class="fa-solid fa-compass"></i>
+            Explore
+          </span>
+        </a>
+      </div>
+
+      <div class="navbar-nav mx-auto">
+        <form class="d-flex" role="search" action="/listings" method="GET">
+          <div class="search-container">
+            <input
+              class="form-control"
+              type="search"
+              name="search"
+              value="<%= typeof search !== 'undefined' ? search : '' %>"
+              placeholder="Where to next?"
+            />
+            <button class="btn" type="submit">
+              <i class="fa-solid fa-magnifying-glass"></i>
+              <span class="d-none d-md-inline">Search</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <div class="navbar-nav ms-auto">
+        <a class="nav-link add-listing-btn" href="/listings/new">
+          <span class="user-icon">
+            <i class="fa-solid fa-plus-circle"></i>
+            Add Listing
+          </span>
+        </a>
+
+        <%if(!curruser){%>
+          <a class="nav-link" href="/signup">
+            <span class="user-icon">
+              <i class="fa-solid fa-user-plus"></i>
+              <b>Signup</b>
+            </span>
+          </a>
+          <a class="nav-link" href="/login">
+            <span class="user-icon">
+              <i class="fa-solid fa-right-to-bracket"></i>
+              <b>Login</b>
+            </span>
+          </a>
+        <%}%>
+        <%if(curruser){%>
+          <a class="nav-link" href="/logout">
+            <span class="user-icon">
+              <i class="fa-solid fa-right-from-bracket"></i>
+              <b>Logout</b>
+            </span>
+          </a>
+        <%}%>
+      </div>
+    </div>
+  </div>
+</nav>
